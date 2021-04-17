@@ -7,7 +7,7 @@ For this project I wanted to set up a [Jenkins](https://www.jenkins.io/) pipelin
 3. deploys the packaged application to a [Tomcat](http://tomcat.apache.org/) server if all tests were successful.
 
 ## Steps
-To achieve this goal I set up a jenkins server on [AWS](https://aws.amazon.com/de/) and
+To achieve this goal I set up a jenkins server and
 added a [Jenkinsfile](../Jenkinsfile) to this repo where the pipeline stages and steps are defined.  
 During set up I installed the suggested plugins and later added the following ones:
 - [Docker Pipeline Plugin](https://plugins.jenkins.io/docker-workflow/)
