@@ -22,8 +22,8 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 @Component
 public class JWTAuthenticationVerificationFilter extends BasicAuthenticationFilter {
 
-    public JWTAuthenticationVerificationFilter(AuthenticationManager authManager) {
-        super(authManager);
+    public JWTAuthenticationVerificationFilter(AuthenticationManager authenticationManager) {
+        super(authenticationManager);
     }
 
     @Override
@@ -44,16 +44,20 @@ public class JWTAuthenticationVerificationFilter extends BasicAuthenticationFilt
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest req) {
         val token = req.getHeader(SecurityConstants.HEADER_STRING);
-        if (token != null) {
-            val user = JWT.require(HMAC512(SecurityConstants.SECRET.getBytes())).build()
-                    .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
-                    .getSubject();
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-            }
+
+        if (token == null) {
             return null;
         }
-        return null;
+
+        val user = JWT.require(HMAC512(SecurityConstants.SECRET.getBytes())).build()
+                .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
+                .getSubject();
+
+        if (user == null) {
+            return null;
+        }
+
+        return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
     }
 
 }

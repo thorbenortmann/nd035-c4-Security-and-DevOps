@@ -1,6 +1,7 @@
 package com.example.demo.security;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,8 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsServiceImpl userDetailsService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public WebSecurityConfiguration(UserDetailsServiceImpl userDetailsService,
                                     BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -41,8 +42,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.parentAuthenticationManager(authenticationManagerBean())
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 }
